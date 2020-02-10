@@ -4,17 +4,24 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+// import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Device from './component/Device';
+import MacList from './component/MacList';
 // import axios from "axios";
 import './App.css';
 
 function DeviceList(props) {
     const deviceInfo = props.deviceInfo;
     const deviceName = props.deviceName;
-    const listDevices = deviceName.map((value, index) => (
+    const devicesList = deviceName.map((value, index) => (
         <Device key={index} name={value} data={deviceInfo[value]}></Device>
     ))
-    return listDevices;
+    return devicesList;
 }
 
 class App extends React.Component {
@@ -22,8 +29,11 @@ class App extends React.Component {
         super(props);
         this.state = {
             deviceInfo: [],
-            name: []
+            name: [],
+            open: false
         }
+        this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
+        this.handleDrawerClose = this.handleDrawerClose.bind(this);
     };
 
     componentDidMount() {
@@ -59,6 +69,16 @@ class App extends React.Component {
 
     }
 
+    handleDrawerOpen() {
+        console.log("open");
+        this.setState({ open: true });
+    };
+
+    handleDrawerClose() {
+        console.log("close")
+        this.setState({ open: false });
+    };
+
     render() {
         const deviceInfo = this.state.deviceInfo;
         const deviceName = this.state.name;
@@ -66,20 +86,34 @@ class App extends React.Component {
             <div>
                 <AppBar position="relative">
                     <Toolbar className="toolbar">
-                        {/* <IconButton
-                            edge="start"
+                        <IconButton
                             color="inherit"
                             aria-label="open drawer"
-                            >
+                            onClick={this.handleDrawerOpen}
+                            edge="start"
+                            // className={clsx("menuButton", this.state.open && "hide")}
+                        >
                             <MenuIcon />
-                        </IconButton> */}
+                        </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap className="title">
                             Dashboard
                     </Typography>
                     </Toolbar>
                 </AppBar>
 
-                <Container maxWidth="xm">
+                <Drawer
+                    // variant="persistent"
+                    anchor="left"
+                    open={this.state.open}
+                >
+                    <IconButton onClick={this.handleDrawerClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    <Divider />
+                    <MacList mac={['Inbox', 'Starred', 'Send email', 'Drafts']} />
+                </Drawer>
+
+                <Container >
                     <Grid container className="root" justify="center">
                         <Grid item xs={12}>
                             <Grid container justify="center" spacing={2}>
@@ -88,7 +122,7 @@ class App extends React.Component {
                         </Grid>
                     </Grid>
                 </Container>
-            </div>
+            </div >
         );
     }
 }

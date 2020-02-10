@@ -20,6 +20,13 @@
   font-size: 100px;
 }
 
+/* .menuButton{
+  margin-right: 100px;
+} */
+
+.hide{
+  display: none;
+}
 /* .App {
   text-align: center;
 }
