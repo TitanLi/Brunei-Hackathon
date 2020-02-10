@@ -11,7 +11,7 @@ import './App.css';
 function DeviceList(props) {
     const deviceInfo = props.deviceInfo;
     const deviceName = props.deviceName;
-    const listDevices = deviceName.map((value,index) => (
+    const listDevices = deviceName.map((value, index) => (
         <Device key={index} name={value} data={deviceInfo[value]}></Device>
     ))
     return listDevices;
@@ -28,33 +28,33 @@ class App extends React.Component {
 
     componentDidMount() {
         setInterval(
-            function(){
+            function () {
                 fetch("http://127.0.0.1:3001/query", {
-                method: 'GET',
-                headers: {
-                    'Access-Control-Allow-Origin': '*'
-                }
-            })
-                .then(res => res.json())
-                .then(
-                    (data) => {
-                        // console.log(`deviceInfo : ${data}`);
-                        const deviceInfo = data.deviceInfo;
-                        const name = Object.keys(deviceInfo);
-                        this.setState({
-                            deviceInfo: data.deviceInfo,
-                            name: name
-                        });
-                    },
-                    (error) => {
-                        console.log(error)
-                        this.setState({
-                            deviceInfo: [],
-                            name: []
-                        });
+                    method: 'GET',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
                     }
-                )
-            }.bind(this),1000
+                })
+                    .then(res => res.json())
+                    .then(
+                        (data) => {
+                            // console.log(`deviceInfo : ${data}`);
+                            const deviceInfo = data.deviceInfo;
+                            const name = Object.keys(deviceInfo);
+                            this.setState({
+                                deviceInfo: data.deviceInfo,
+                                name: name
+                            });
+                        },
+                        (error) => {
+                            console.log(error)
+                            this.setState({
+                                deviceInfo: [],
+                                name: []
+                            });
+                        }
+                    )
+            }.bind(this), 1000
         );
 
     }
@@ -66,12 +66,20 @@ class App extends React.Component {
             <div>
                 <AppBar position="relative">
                     <Toolbar className="toolbar">
-                        <Typography component="h1" variant="h6" color="inherit" className="title">
+                        {/* <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="open drawer"
+                            >
+                            <MenuIcon />
+                        </IconButton> */}
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className="title">
                             Dashboard
                     </Typography>
                     </Toolbar>
                 </AppBar>
-                <Container>
+
+                <Container maxWidth="xm">
                     <Grid container className="root" justify="center">
                         <Grid item xs={12}>
                             <Grid container justify="center" spacing={2}>
