@@ -57,7 +57,7 @@ function connect() {
         },
         function (err) {
             if (err) {
-                console.log(color.red('Error: No such file or directory, cannot open /dev/ttyACM0'));
+                console.log(color.red(err));
             }
         });
 
