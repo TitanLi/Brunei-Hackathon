@@ -9,23 +9,27 @@ const request = require('request');
 const Readline = SerialPort.parsers.Readline;
 let port;
 const deviceSensorData = {};
+const cloudIP = '10.20.0.47';
 
 function update(mac, data) {
     deviceSensorData[mac] = data;
 }
 
-function handleInsertData(mac,sensorData){
+function handleInsertData(cloudIP,mac,sensorData){
     let postData = {
         "mac": mac,
         "sensorData": sensorData
     };
-    request.post({
-        url: 'http://127.0.0.1:3001/insert',
-        form: postData
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(color.yellow("POST insert API successfully"));
-        }
+    ['127.0.0.1',cloudIP].map((IP) => {
+        console.log(IP)
+        request.post({
+            url: `http://${IP}:30001/insert`,
+            form: postData
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(color.yellow("POST insert API successfully"));
+            }
+        });
     });
 }
 
@@ -34,13 +38,15 @@ function handleDevicesData(mac,sensorData){
         ip: mac,
         mac: sensorData
     }
-    request.post({
-        url: 'http://127.0.0.1:3001/devices',
-        form: postData
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(color.yellow("POST devices API successfully"));
-        }
+    ['127.0.0.1',cloudIP].map((IP) => {
+        request.post({
+            url: `http://${IP}:30001/devices`,
+            form: postData
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(color.yellow("POST devices API successfully"));
+            }
+        });
     });
 }
 
@@ -62,8 +68,8 @@ function connect() {
         console.log(`SerialPort Data => ${data}`);
         try {
             let sensorData = JSON.parse(data);
-            handleInsertData(getmac().replace(/:/g, ''),sensorData);
-            handleDevicesData(ip.address(),getmac().replace(/:/g, ''));
+            handleInsertData(cloudIP,getmac().replace(/:/g, ''),sensorData);
+            handleDevicesData(cloudIP,ip.address(),getmac().replace(/:/g, ''));
         } catch (error) {
             console.log(color.red('JSON error'));
         }
@@ -84,7 +90,7 @@ setInterval(() => {
         if (err) {
             console.log(color.red('Port is not open'));
             let sensorData = {};
-            handleInsertData(getmac().replace(/:/g, ''),sensorData);
+            handleInsertData(cloudIP,getmac().replace(/:/g, ''),sensorData);
             connect();
         }
     });
@@ -156,4 +162,4 @@ app.post('/devices', (req, res) => {
     res.json(insertData);
 });
 
-app.listen(3001);
+app.listen(30001);
