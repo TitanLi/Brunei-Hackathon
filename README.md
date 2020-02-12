@@ -39,6 +39,6 @@ $ source ~/.nvm/nvm.sh
 
 ### Run ReactJS APP
 ```shell
-$ echo "PORT=3006" > .env
+$ echo "PORT=30002" > .env
 $ pm2 start node_modules/react-scripts/scripts/start.js --name "my-app"
 ```

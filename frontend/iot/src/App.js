@@ -42,7 +42,7 @@ class App extends React.Component {
         setInterval(
             function () {
                 // console.log(this.state.selectMac);
-                fetch(`http://${window.location.hostname}:3001/query/${this.state.selectMac}`, {
+                fetch(`http://${window.location.hostname}:30001/query/${this.state.selectMac}`, {
                     method: 'GET',
                     headers: {
                         'Access-Control-Allow-Origin': '*'
@@ -68,7 +68,7 @@ class App extends React.Component {
         setInterval(
             function () {
                 // console.log(this.state.selectMac);
-                fetch(`http://${window.location.hostname}:3001/devices`, {
+                fetch(`http://${window.location.hostname}:30001/devices`, {
                     method: 'GET',
                     headers: {
                         'Access-Control-Allow-Origin': '*'
@@ -95,7 +95,7 @@ class App extends React.Component {
             }.bind(this), 1000
         );
         
-        fetch(`http://${window.location.hostname}:3001/localInfo`, {
+        fetch(`http://${window.location.hostname}:30001/localInfo`, {
                     method: 'GET',
                     headers: {
                         'Access-Control-Allow-Origin': '*'
