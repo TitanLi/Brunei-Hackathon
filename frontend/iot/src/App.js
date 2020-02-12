@@ -29,13 +29,14 @@ class App extends React.Component {
         this.state = {
             deviceInfo: [],
             open: false,
-            ip: '',
+            localIP: '',
+            localMac: '',
             selectMac: '',
             macList: []
         }
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
         this.handleDrawerClose = this.handleDrawerClose.bind(this);
-        this.selectMac = this.selectMac.bind(this);
+        this.handleSelectMac = this.handleSelectMac.bind(this);
     };
 
     componentDidMount() {
@@ -78,7 +79,7 @@ class App extends React.Component {
                     .then(
                         (data) => {
                             let newMAC = [];
-                            for(let i in data){
+                            for (let i in data) {
                                 newMAC.push(data[i].mac)
                             }
                             this.setState({
@@ -94,32 +95,33 @@ class App extends React.Component {
                     )
             }.bind(this), 1000
         );
-        
+
         fetch(`http://${window.location.hostname}:30001/localInfo`, {
-                    method: 'GET',
-                    headers: {
-                        'Access-Control-Allow-Origin': '*'
-                    }
-                })
-                    .then(res => res.json())
-                    .then(
-                        (data) => {
-                            console.log(data);
-                            let IP = data.ip;
-                            let MAC = data.mac;
-                            this.setState({
-                                ip : IP,
-                                selectMac : MAC
-                            });
-                        },
-                        (error) => {
-                            console.log(error)
-                            this.setState({
-                                ip: '',
-                                selectMac: ''
-                            });
-                        }
-                    )
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(res => res.json())
+            .then(
+                (data) => {
+                    console.log(data);
+                    let IP = data.ip;
+                    let MAC = data.mac;
+                    this.setState({
+                        localIP: IP,
+                        localMac: MAC,
+                        selectMac: MAC
+                    });
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        localIP: '',
+                        localMac: ''
+                    });
+                }
+            )
     }
 
     handleDrawerOpen() {
@@ -132,7 +134,7 @@ class App extends React.Component {
         this.setState({ open: false });
     };
 
-    selectMac(event) {
+    handleSelectMac(event) {
         // 取得List
         const selectMac = event.currentTarget.getAttribute('value');
         console.log(selectMac);
@@ -151,12 +153,12 @@ class App extends React.Component {
                             aria-label="open drawer"
                             onClick={this.handleDrawerOpen}
                             edge="start"
-                            // className={clsx("menuButton", this.state.open && "hide")}
+                        // className={clsx("menuButton", this.state.open && "hide")}
                         >
                             <MenuIcon />
                         </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap className="title">
-                            Dashboard (Local Info ip:{this.state.ip} mac:{this.state.selectMac})
+                            Dashboard (Local Info ip:{this.state.localIP} mac:{this.state.localMac})
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -170,10 +172,15 @@ class App extends React.Component {
                         <ChevronLeftIcon />
                     </IconButton>
                     <Divider />
-                    <MacList mac={this.state.macList} selectMac={this.selectMac}/>
+                    <MacList mac={this.state.macList} handleSelectMac={this.handleSelectMac} />
                 </Drawer>
 
                 <Container >
+                    <Grid container className="root" justify="center">
+                        <Typography variant="h4">
+                            Select Mac:{this.state.selectMac}
+                        </Typography>
+                    </Grid>
                     <Grid container className="root" justify="center">
                         <Grid item xs={12}>
                             <Grid container justify="center" spacing={2}>

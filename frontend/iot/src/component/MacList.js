@@ -8,7 +8,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 function MacList(props) {
     const mac = props.mac;
     const macItem = mac.map((text, index) => (
-        <ListItem button key={text} value={text} onClick={props.selectMac}>
+        <ListItem button key={text} value={text} onClick={props.handleSelectMac}>
             <ListItemIcon>
                 <InboxIcon />
             </ListItemIcon>
