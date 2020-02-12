@@ -21,7 +21,6 @@ function handleInsertData(cloudIP,mac,sensorData){
         "sensorData": sensorData
     };
     ['127.0.0.1',cloudIP].map((IP) => {
-        console.log(IP)
         request.post({
             url: `http://${IP}:30001/insert`,
             form: postData
@@ -33,11 +32,11 @@ function handleInsertData(cloudIP,mac,sensorData){
     });
 }
 
-function handleDevicesData(mac,sensorData){
+function handleDevicesData(cloudIP,ip,mac){
     let postData = {
-        ip: mac,
-        mac: sensorData
-    }
+        "ip": ip,
+        "mac": mac
+    };
     ['127.0.0.1',cloudIP].map((IP) => {
         request.post({
             url: `http://${IP}:30001/devices`,
