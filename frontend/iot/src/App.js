@@ -17,9 +17,8 @@ import './App.css';
 
 function DeviceList(props) {
     const deviceInfo = props.deviceInfo;
-    const deviceName = props.deviceName;
-    const devicesList = deviceName.map((value, index) => (
-        <Device key={index} name={value} data={deviceInfo[value]}></Device>
+    const devicesList = deviceInfo.map((obj, index) => (
+        <Device key={index} name={obj.name} data={obj.value}></Device>
     ))
     return devicesList;
 }
@@ -29,17 +28,21 @@ class App extends React.Component {
         super(props);
         this.state = {
             deviceInfo: [],
-            name: [],
-            open: false
+            open: false,
+            ip: '',
+            selectMac: '',
+            macList: []
         }
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
         this.handleDrawerClose = this.handleDrawerClose.bind(this);
+        this.selectMac = this.selectMac.bind(this);
     };
 
     componentDidMount() {
         setInterval(
             function () {
-                fetch("http://127.0.0.1:3001/query", {
+                // console.log(this.state.selectMac);
+                fetch(`http://${window.location.hostname}:3001/query/${this.state.selectMac}`, {
                     method: 'GET',
                     headers: {
                         'Access-Control-Allow-Origin': '*'
@@ -48,25 +51,75 @@ class App extends React.Component {
                     .then(res => res.json())
                     .then(
                         (data) => {
-                            // console.log(`deviceInfo : ${data}`);
-                            const deviceInfo = data.deviceInfo;
-                            const name = Object.keys(deviceInfo);
                             this.setState({
-                                deviceInfo: data.deviceInfo,
-                                name: name
+                                deviceInfo: data
                             });
                         },
                         (error) => {
                             console.log(error)
                             this.setState({
-                                deviceInfo: [],
-                                name: []
+                                deviceInfo: []
                             });
                         }
                     )
             }.bind(this), 1000
         );
 
+        setInterval(
+            function () {
+                // console.log(this.state.selectMac);
+                fetch(`http://${window.location.hostname}:3001/devices`, {
+                    method: 'GET',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(
+                        (data) => {
+                            let newMAC = [];
+                            for(let i in data){
+                                newMAC.push(data[i].mac)
+                            }
+                            this.setState({
+                                macList: newMAC
+                            });
+                        },
+                        (error) => {
+                            console.log(error)
+                            this.setState({
+                                macList: []
+                            });
+                        }
+                    )
+            }.bind(this), 1000
+        );
+        
+        fetch(`http://${window.location.hostname}:3001/localInfo`, {
+                    method: 'GET',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(
+                        (data) => {
+                            console.log(data);
+                            let IP = data.ip;
+                            let MAC = data.mac;
+                            this.setState({
+                                ip : IP,
+                                selectMac : MAC
+                            });
+                        },
+                        (error) => {
+                            console.log(error)
+                            this.setState({
+                                ip: '',
+                                selectMac: ''
+                            });
+                        }
+                    )
     }
 
     handleDrawerOpen() {
@@ -79,9 +132,16 @@ class App extends React.Component {
         this.setState({ open: false });
     };
 
+    selectMac(event) {
+        // 取得List
+        const selectMac = event.currentTarget.getAttribute('value');
+        console.log(selectMac);
+        const copy = selectMac.concat();
+        this.setState({ selectMac: copy });
+    }
+
     render() {
         const deviceInfo = this.state.deviceInfo;
-        const deviceName = this.state.name;
         return (
             <div>
                 <AppBar position="relative">
@@ -96,8 +156,8 @@ class App extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap className="title">
-                            Dashboard
-                    </Typography>
+                            Dashboard (Local Info ip:{this.state.ip} mac:{this.state.selectMac})
+                        </Typography>
                     </Toolbar>
                 </AppBar>
 
@@ -110,14 +170,14 @@ class App extends React.Component {
                         <ChevronLeftIcon />
                     </IconButton>
                     <Divider />
-                    <MacList mac={['Inbox', 'Starred', 'Send email', 'Drafts']} />
+                    <MacList mac={this.state.macList} selectMac={this.selectMac}/>
                 </Drawer>
 
                 <Container >
                     <Grid container className="root" justify="center">
                         <Grid item xs={12}>
                             <Grid container justify="center" spacing={2}>
-                                <DeviceList deviceInfo={deviceInfo} deviceName={deviceName}></DeviceList>
+                                <DeviceList deviceInfo={deviceInfo}></DeviceList>
                             </Grid>
                         </Grid>
                     </Grid>
