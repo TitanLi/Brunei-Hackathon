@@ -1,6 +1,7 @@
 # Brunei-Hackation
-
-## Raspberry pi 4
+## Base on Ubuntu
+---
+## Base on Raspberry pi 4
 ### Install OS
 Raspbian OS:[https://www.raspberrypi.org/downloads/raspbian/](https://www.raspberrypi.org/downloads/raspbian/)
 > macOS
@@ -66,18 +67,128 @@ $ cd Brunei-Hackation/frontend/iot
 $ npm install
 $ pm2 start node_modules/react-scripts/scripts/start.js --name "web-service"
 ```
+---
 
 ## API Doc
-### GET Device Data
-GET: /query/:mac
+### 1. Add Device Information
+#### API:
+| Method |  URL   |
+|--------|--------|
+|  POST  |/devices|
 
-#### Request
+#### Description:
+You can call API to create a device to cloud, then you can through a browser search [http://127.0.0.1:30002](http://127.0.0.1:30002) watch device on Web Dashboard.
+
+#### Request Parameters
 Params:
-| Params | Type |  example   |
-|--------|------|------------|
-|  mac   |String|fa163e970e44|
+| Params | Type |   example    |
+|--------|------|--------------|
+|  ip    |String|"192.168.0.29"|
+|  mac   |String|"fa163e970e44"|
+example:
+```json
+{
+    "ip": "192.168.0.29",
+    "mac": "fa163e970e44"
+}
+```
+#### API Response
+example:
+```json
+{
+    "status": "successfully"
+}
+```
 
-#### Response
+### 2. Get List of Registered Devices
+#### Description:
+You can get a list of registered devices through the API.
+
+#### API:
+| Method |  URL   |
+|--------|--------|
+|  GET   |/devices|
+
+#### Request Parameters
+None
+
+#### API Response
+example:
+```json
+[
+    {
+        "ip": "192.168.0.29",
+        "mac": "fa163e970e44"
+    }
+]
+```
+
+### 3. Update Device Sensor Data
+#### Description
+You can update the sensor data through the registered mac address. Then search [http://127.0.0.1:30002](http://127.0.0.1:30002) through your browser, select the mac address of the device to view the data.
+
+#### API
+| Method |  URL   |
+|--------|--------|
+|  POST  |/insert |
+
+#### Request Parameters
+Params:
+|  Params      | Type      |   example                            |
+|--------------|-----------|--------------------------------------|
+|  mac         |String     |"fa163e970e44"                        |
+|  sensorData  |JSON Object|{"humidity": "41","temperature": "27"}|
+
+JSON Object:
+```json
+{
+  "Key1" : "Value1",
+  "Key2" : "Value2"
+}
+```
+
+> Annotation:<br>
+> The sensorData parameter is a JSON Object whose "Key" is the name of the sensor and "Value" is the value of the sensor.
+
+
+example:
+```json
+{
+    "mac": "fa163e970e44",
+    "sensorData": {
+        "humidity": "41",
+        "temperature": "27"
+    }
+}
+```
+
+#### API Response
+example:
+```json
+{
+    "status": "successfully"
+}
+```
+
+### 4. Get Device Sensor Data
+Description:
+You can get the sensor data from the registered mac address.
+
+#### API
+| Method |     URL    |
+|--------|------------|
+|  GET   |/query/:mac |
+
+#### Description
+You can get the sensor data from the registered mac address.
+
+#### Request Parameters
+Params:
+| Params | Type |   example    |
+|--------|------|--------------|
+|  mac   |String|"fa163e970e44"|
+
+#### API Response
 example:
 ```json
 [
@@ -92,10 +203,19 @@ example:
 ]
 ```
 
-### GET Device Local Information
-GET: /localInfo
+### 5. GET Device Local Information
+#### Description
+You can get the host IP and MAC information by this API
 
-#### Response
+#### API
+| Method |     URL    |
+|--------|------------|
+|  GET   |/localInfo  |
+
+#### Request Parameters
+None
+
+#### API Response
 example:
 ```json
 {
@@ -104,59 +224,15 @@ example:
 }
 ```
 
-### Update Sensor Data
-POST: /insert
-
-#### request
-example:
-```json
-{
-    "mac": "fa163e970e44",
-    "sensorData": {
-        "humidity": "41",
-        "temperature": "27"
-    }
-}
+## Error handle
+Error message
+```shell
+TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received type undefined
 ```
-
-#### response
-example:
-```json
-{
-    "status": "successfully"
-}
-```
-
-### Get Device List
-Get: /devices
-
-#### response
-example:
-```json
-[
-    {
-        "ip": "192.168.0.29",
-        "mac": "fa163e970e44"
-    }
-]
-```
-
-### Add Device Information
-POST: /devices
-
-#### request
-example:
-```json
-{
-    "ip": "192.168.0.29",
-    "mac": "fa163e970e44"
-}
-```
-
-#### response
-example:
-```json
-{
-    "status": "successfully"
-}
+handle method
+```shell
+$ rm -rf node_modules
+$ rm package-lock.json
+$ vim package.js ("react-scripts": "3.x.x" to "react-scripts": "^3.4.0")
+$ npm install
 ```
