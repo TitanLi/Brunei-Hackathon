@@ -177,7 +177,7 @@ class App extends React.Component {
 
                 <Container >
                     <Grid container className="root" justify="center">
-                        <Typography variant="h4">
+                        <Typography component="h1" variant="h5" color="inherit" noWrap>
                             Select Mac:{this.state.selectMac}
                         </Typography>
                     </Grid>
