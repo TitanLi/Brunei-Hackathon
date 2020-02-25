@@ -1,5 +1,16 @@
 # Brunei-Hackation
+## universal internet of things (IoT) platform
+[![universal internet of things (IoT) platform](https://img.youtube.com/vi/2yLvn0ezpGU/0.jpg)](https://www.youtube.com/watch?v=2yLvn0ezpGU)
 ## Base on Ubuntu
+### Install NodeJS
+```shell
+$ sudo apt-get update
+$ sudo apt-get install build-essential libssl-dev
+$ sudo curl https://raw.githubusercontent.com/creationix/nvm/v0.25.0/install.sh | bash
+$ source ~/.profile
+$ nvm install 10
+$ nvm alias default 10
+```
 ---
 ## Base on Raspberry pi 4
 ### Install OS
@@ -74,17 +85,17 @@ $ pm2 start node_modules/react-scripts/scripts/start.js --name "web-service"
 #### API:
 | Method |  URL   |
 |--------|--------|
-|  POST  |/devices|
+|  POST  |http://127.0.0.1:30001/devices|
 
 #### Description:
 You can call API to create a device to cloud, then you can through a browser search [http://127.0.0.1:30002](http://127.0.0.1:30002) watch device on Web Dashboard.
 
 #### Request Parameters
 Params:
-| Params | Type |   example    |
-|--------|------|--------------|
-|  ip    |String|"192.168.0.29"|
-|  mac   |String|"fa163e970e44"|
+| Params | Type |Description |   example    |
+|--------|------|------------|--------------|
+|  ip    |String|Device IP address|"192.168.0.29"|
+|  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
 example:
 ```json
 {
@@ -93,6 +104,11 @@ example:
 }
 ```
 #### API Response
+Params:
+| Params | Type |   example    |
+|--------|------|--------------|
+|status  |String|"successfully"|
+
 example:
 ```json
 {
@@ -107,18 +123,27 @@ You can get a list of registered devices through the API.
 #### API:
 | Method |  URL   |
 |--------|--------|
-|  GET   |/devices|
+|  GET   |http://127.0.0.1:30001/devices|
 
 #### Request Parameters
 None
 
 #### API Response
+Params:
+| Params | Type |Description |   example    |
+|--------|------|------------|--------------|
+|  ip    |String|Device IP address|"192.168.0.29"|
+|  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
 example:
 ```json
 [
     {
         "ip": "192.168.0.29",
         "mac": "fa163e970e44"
+    },
+    {
+        "ip": "192.168.0.30",
+        "mac": "fa163e970e45"
     }
 ]
 ```
@@ -130,14 +155,14 @@ You can update the sensor data through the registered mac address. Then search [
 #### API
 | Method |  URL   |
 |--------|--------|
-|  POST  |/insert |
+|  POST  |http://127.0.0.1:30001/insert |
 
 #### Request Parameters
 Params:
-|  Params      | Type      |   example                            |
-|--------------|-----------|--------------------------------------|
-|  mac         |String     |"fa163e970e44"                        |
-|  sensorData  |JSON Object|{"humidity": "41","temperature": "27"}|
+|  Params      | Type      |Description|   example                            |
+|--------------|-----------|-----------|--------------------------------------|
+|  mac         |String     |Device media access control<br>address (MAC address)|"fa163e970e44"|
+|  sensorData  |JSON Object|Arduino sensor data<br>JSON key is the sensor name<br>JSON value is the sensor value|{<br>&nbsp;&nbsp;"humidity": "41",<br>&nbsp;&nbsp;"temperature": "27"<br>}|
 
 JSON Object:
 ```json
@@ -177,18 +202,23 @@ You can get the sensor data from the registered mac address.
 #### API
 | Method |     URL    |
 |--------|------------|
-|  GET   |/query/:mac |
+|  GET   |http://127.0.0.1:30001/query/:mac |
 
 #### Description
 You can get the sensor data from the registered mac address.
 
 #### Request Parameters
 Params:
-| Params | Type |   example    |
-|--------|------|--------------|
-|  mac   |String|"fa163e970e44"|
+| Params | Type |Description|   example    |
+|--------|------|-----------|--------------|
+|  mac   |String|The MAC above the Raspberry pi4 <br>is the same as the WiFi SSID|"fa163e970e44"|
 
 #### API Response
+Params:
+| Params | Type |Description|   example    |
+|--------|------|-----------|--------------|
+|  name  |String|Sensor name|"humidity"    |
+|  value |String|Sensor data|"41"          |
 example:
 ```json
 [
@@ -210,12 +240,17 @@ You can get the host IP and MAC information by this API
 #### API
 | Method |     URL    |
 |--------|------------|
-|  GET   |/localInfo  |
+|  GET   |http://127.0.0.1:30001/localInfo  |
 
 #### Request Parameters
 None
 
 #### API Response
+Params:
+| Params | Type |Description |   example    |
+|--------|------|------------|--------------|
+|  ip    |String|Device IP address|"192.168.0.29"|
+|  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
 example:
 ```json
 {
