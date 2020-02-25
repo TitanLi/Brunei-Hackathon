@@ -2,6 +2,8 @@
 ## universal internet of things (IoT) platform
 
 [![universal internet of things (IoT) platform](https://github.com/TitanLi/Brunei-Hackathon/blob/master/picture/video.png)](https://www.youtube.com/watch?v=2yLvn0ezpGU)
+
+---
 ## Base on Ubuntu
 ### Install NodeJS
 ```shell
