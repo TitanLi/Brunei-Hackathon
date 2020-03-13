@@ -1,4 +1,5 @@
 const getmac = require('getmac').default;
+const Joi = require('joi');
 const ip = require('ip');
 const deviceSensorData = {}; // { devicesMAC : sensorDataJSON }
 const devices = {}; // { devicesMAC : IP }
@@ -26,12 +27,27 @@ module.exports = {
         res.json(data);
     },
 
-    insert: (req, res) => {
-        let mac = req.body.mac;
-        let sensorData = req.body.sensorData;
-        deviceSensorData[mac] = sensorData;
-        res.json({
-            status:'successfully'
+    insertData: (req, res) => {
+        const schema = Joi.object().keys({
+            "mac": Joi.string().required(),
+            "sensorData": Joi.object().required()
+        });
+        Joi.validate(req.body, schema, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.json({
+                    status: 'Insert data error',
+                    message: (err.details[0].message.replace(/"/g, '') || "error")
+                });
+            } else {
+                console.log(result);
+                let mac = req.body.mac;
+                let sensorData = req.body.sensorData;
+                deviceSensorData[mac] = sensorData;
+                res.json({
+                    status: 'successfully'
+                });
+            }
         });
     },
 
@@ -48,11 +64,26 @@ module.exports = {
     },
 
     postDevices: (req, res) => {
-        let ip = req.body.ip;
-        let mac = req.body.mac;
-        devices[mac] = ip;
-        res.json({
-            status:'successfully'
+        const schema = Joi.object().keys({
+            "ip": Joi.string().required(),
+            "mac": Joi.string().required()
+        });
+        Joi.validate(req.body, schema, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.json({
+                    status: 'Insert device error',
+                    message: (err.details[0].message.replace(/"/g, '') || "error")
+                });
+            } else {
+                console.log(result);
+                let ip = req.body.ip;
+                let mac = req.body.mac;
+                devices[mac] = ip;
+                res.json({
+                    status: 'successfully'
+                });
+            }
         });
     }
 }
