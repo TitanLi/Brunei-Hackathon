@@ -18,7 +18,7 @@ app.use(cors());
 app.get('/query/:mac', route.query);
 app.get('/localInfo', route.localInfo);
 app.get('/devices', route.getDevices);
-app.post('/insertData', route.insertData);
+app.post('/insert', route.insertData);
 app.post('/devices', route.postDevices);
 
 app.listen(process.env.PORT, (err) => {
