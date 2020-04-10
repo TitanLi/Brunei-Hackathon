@@ -41,7 +41,7 @@ or
 Method 2:
 
 ```shell
-$sudo systemctl enable ssh
+$ sudo systemctl enable ssh
 $ sudo systemctl start ssh
 ```
 
