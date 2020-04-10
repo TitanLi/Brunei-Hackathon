@@ -99,6 +99,7 @@ Params:
 |--------|------|------------|--------------|
 |  ip    |String|Device IP address|"192.168.0.29"|
 |  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
+
 example:
 ```json
 {
@@ -137,6 +138,7 @@ Params:
 |--------|------|------------|--------------|
 |  ip    |String|Device IP address|"192.168.0.29"|
 |  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
+
 example:
 ```json
 [
@@ -162,8 +164,8 @@ You can update the sensor data through the registered mac address. Then search [
 
 #### Request Parameters
 Params:
-|  Params      | Type      |Description|   example                            |
-|--------------|-----------|-----------|--------------------------------------|
+|  Params      | Type      |Description|   example |
+|--------------|-----------|-----------|-----------|
 |  mac         |String     |Device media access control<br>address (MAC address)|"fa163e970e44"|
 |  sensorData  |JSON Object|Arduino sensor data<br>JSON key is the sensor name<br>JSON value is the sensor value|{<br>&nbsp;&nbsp;"humidity": "41",<br>&nbsp;&nbsp;"temperature": "27"<br>}|
 
@@ -222,6 +224,7 @@ Params:
 |--------|------|-----------|--------------|
 |  name  |String|Sensor name|"humidity"    |
 |  value |String|Sensor data|"41"          |
+
 example:
 ```json
 [
@@ -254,6 +257,7 @@ Params:
 |--------|------|------------|--------------|
 |  ip    |String|Device IP address|"192.168.0.29"|
 |  mac   |String|Device media access control<br>address (MAC address)|"fa163e970e44"|
+
 example:
 ```json
 {
