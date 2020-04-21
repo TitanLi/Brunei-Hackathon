@@ -1,3 +1,7 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';

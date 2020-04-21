@@ -1,3 +1,8 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
+
 //Docker control device
 //sudo docker run -tid --device=/dev/ttyACM0 node bash
 const SerialPort = require("serialport");

@@ -1,3 +1,7 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
 const request = require('request');
 const color = require('colors');
 const handleInsertData = function (cloudIP, mac, sensorData) {

@@ -1,3 +1,7 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
 const getmac = require('getmac').default;
 const Joi = require('joi');
 const ip = require('ip');

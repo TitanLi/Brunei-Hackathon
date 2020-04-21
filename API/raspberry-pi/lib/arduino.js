@@ -1,3 +1,7 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
 const SerialPort = require('serialport');
 const color = require('colors');
 const ip = require('ip');

@@ -1,3 +1,7 @@
+/*
+ * Brunei-Hackathon v1.0.0 (https://github.com/TitanLi/Brunei-Hackathon)
+ * License: Apache License 2.0
+ */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,10 +9,10 @@ const dotenv = require('dotenv').config();
 const route = require('./lib/route');
 
 // SerialPort
-// const Arduino = require('./lib/arduino');
-// const arduino = new Arduino(process.env.DEVICE_TTY);
-// arduino.connect();
-// arduino.enableAutoConnection();
+const Arduino = require('./lib/arduino');
+const arduino = new Arduino(process.env.DEVICE_TTY);
+arduino.connect();
+arduino.enableAutoConnection();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
